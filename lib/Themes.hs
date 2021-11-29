@@ -1,4 +1,4 @@
-module Themes 
+module Themes
   ( barTheme
   , dirTheme
   , decoTheme
@@ -16,25 +16,27 @@ module Themes
 where
 
 import           Deco
+import           XMonad.Layout.NoFrillsDecoration
 import           XMonad.Prompt
 import           XMonad.Prompt.Workspace
-import           XMonad.Layout.NoFrillsDecoration
 import           XMonad.Util.Image
 
-myFont = "xft:Dina:bold:size=10:antialias=true" 
+myFont = "xft:Dina:bold:size=10:antialias=true"
 black  = "#282828"
+green  = "#828e6f"
 red    = "#cc241d"
 purple = "#8f3f71"
-dark   = "#665c54" 
+dark   = "#665c54"
 white  = "#C4C4C4"
-blue   = "#3579A8" 
+blue   = "#3579A8"
 
+primary = green
 
 decoTheme =
   def
-    { activeColor = purple
+    { activeColor = primary
     , activeTextColor = black
-    , inactiveTextColor = purple
+    , inactiveTextColor = primary
     , inactiveColor = black
     , activeBorderWidth = 0
     , inactiveBorderWidth = 0
@@ -53,11 +55,11 @@ barTheme =
       , inactiveBorderColor = black
       , inactiveColor       = black
       , inactiveTextColor   = black
-      , activeBorderColor   = purple
-      , activeColor         = purple
-      , activeTextColor     = purple
-      , urgentTextColor     = purple
-      , urgentBorderColor   = purple
+      , activeBorderColor   = primary
+      , activeColor         = primary
+      , activeTextColor     = primary
+      , urgentTextColor     = primary
+      , urgentBorderColor   = primary
       , decoHeight          = decorationHeight
       }
     where
@@ -70,11 +72,11 @@ tabTheme =
       , inactiveBorderColor = black
       , inactiveColor       = black
       , inactiveTextColor   = dark
-      , activeBorderColor   = purple
-      , activeColor         = purple
+      , activeBorderColor   = primary
+      , activeColor         = primary
       , activeTextColor     = black
-      , urgentTextColor     = purple
-      , urgentBorderColor   = purple
+      , urgentTextColor     = primary
+      , urgentBorderColor   = primary
       }
     where
       font = myFont
@@ -92,7 +94,7 @@ promptTheme =
     , height            = 25
     }
 
-dirTheme = 
+dirTheme =
   def
     { font = myFont
     , bgColor = black

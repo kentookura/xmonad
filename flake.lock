@@ -204,13 +204,17 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-VcYK7LpoCDD+5VSqEqLki7k5YAQfiEx7KEsUXJwpL34=",
-        "path": "./xmonad",
-        "type": "path"
+        "lastModified": 1637599784,
+        "narHash": "sha256-f+zGmJRQm8CFAcSdSSGojaCkd3j536B/9bvuBqMuBYE=",
+        "ref": "master",
+        "rev": "dbe9c4f799fd826c199169d012c2d2687b210a7f",
+        "revCount": 1564,
+        "type": "git",
+        "url": "https://github.com/xmonad/xmonad"
       },
       "original": {
-        "path": "./xmonad",
-        "type": "path"
+        "type": "git",
+        "url": "https://github.com/xmonad/xmonad"
       }
     },
     "xmonad-contrib": {
@@ -223,13 +227,17 @@
         "xmonad": "xmonad_2"
       },
       "locked": {
-        "narHash": "sha256-+oqfraWnyxV9AhnI9cHPsU6J+f2h9RwYXya27a0rmw0=",
-        "path": "./xmonad-contrib",
-        "type": "path"
+        "lastModified": 1638128582,
+        "narHash": "sha256-UxDFpwlk6bKhxCAhyuiZsvvZdamD/lIFf4RNW+JI1OM=",
+        "ref": "master",
+        "rev": "28aa164abd853a237e409d0fbb9f3819f253cf56",
+        "revCount": 3952,
+        "type": "git",
+        "url": "https://github.com/xmonad/xmonad-contrib"
       },
       "original": {
-        "path": "./xmonad-contrib",
-        "type": "path"
+        "type": "git",
+        "url": "https://github.com/xmonad/xmonad-contrib"
       }
     },
     "xmonad_2": {
