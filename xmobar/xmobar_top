@@ -1,0 +1,49 @@
+Config { font             = "xft:Unifont:size=10:regular:antialias=true"
+       , additionalFonts  = [ "xft:siji:pixelsize=26:antialias=true:hinting=true" ]
+       , iconRoot         = "/home/kento/xmonad/xmobar" -- default: "."
+       , iconOffset       = -1
+       , bgColor          = "#282828"
+       , fgColor          = "#665c54"
+       , position         = Static { xpos = 0, ypos = 0, width = 1920, height = 30 }
+       , border           = NoBorder
+       , borderColor      = "#665c54"
+       , sepChar          = "%"   -- delineator between plugin names and straight text
+       , alignSep         = "}{"  -- separator between left-right alignment
+       , template         = "%XMonadLog% }{%dynnetwork% <action=`dbus-send --type=method_call --dest=org.onboard.Onboard /org/onboard/Onboard/Keyboard org.onboard.Onboard.Keyboard.ToggleVisible` button=1> | <icon=keyboard.xpm/></action> <icon=batt5empty.xbm/>%battery% || <action=`~/bin/toggleeww brightness`><icon=bri.xpm/></action> || %date% "
+       , lowerOnStart     = True    -- send to bottom of window stack on start
+       , hideOnStart      = False   -- start with window unmapped (hidden)
+       , allDesktops      = True    -- show on all desktops
+       , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
+       , pickBroadest     = False   -- choose widest display (multi-monitor)
+       , persistent       = True    -- enable/disable hiding (True = disabled)
+       , commands         =
+            [ Run XMonadLog
+            , Run Weather "LOWW" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>°C | <fc=#4682B4><rh></fc>% "
+                                 ] 36000
+            , Run Battery        [ "--template" , " <acstatus>"
+                                 , "--Low"      , "10"        -- units: %
+                                 , "--High"     , "80"        -- units: %
+                                 , "--low"      , "#9d0006"
+                                 , "--normal"   , "#d79921"
+                                 , "--high"     , "#79740e"
+                                 , "--" -- battery specific options
+                                           -- discharging status
+                                           , "-o"       , "<left>% (<timeleft>)"
+                                           -- AC "on" status
+                                           , "-O"       , "<fc=#076678>Charging</fc>"
+                                           -- charged status
+                                           , "-i"       , "<fc=#98971a>Charged</fc>"
+                                 ] 50
+            --   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
+            , Run Date           "<fc=#ABABAB>%d/%m/%y %a %H:%M </fc>" "date" 10
+
+            , Run DynNetwork    [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
+                                 , "--Low"      , "100"       -- units: B/s
+                                 , "--High"     , "5000"       -- units: B/s
+                                 , "--low"      , "#79740e"
+                                 , "--normal"   , "#d79921"
+                                 , "--high"     , "#9d0006"
+                                 ] 10
+
+            ]
+       }

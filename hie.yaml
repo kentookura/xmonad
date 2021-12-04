@@ -1,40 +1,40 @@
 cradle:
   cabal:
-    - path: "lib/xmonad.hs"
+    - path: "xmonad.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Bindings.hs"
+    - path: "src/Bindings.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Deco.hs"
+    - path: "src/Deco.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Layouts.hs"
+    - path: "src/Layouts.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Log.hs"
+    - path: "src/Log.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Projects.hs"
+    - path: "src/Projects.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Scratchpads.hs"
+    - path: "src/Scratchpads.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Search.hs"
+    - path: "src/Search.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Themes.hs"
+    - path: "src/Themes.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Topics.hs"
+    - path: "src/Topics.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Tree.hs"
+    - path: "src/Tree.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Utils.hs"
+    - path: "src/Utils.hs"
       component: "my-xmonad:exe:my-xmonad"
 
-    - path: "lib/Workspaces.hs"
+    - path: "src/Workspaces.hs"
       component: "my-xmonad:exe:my-xmonad"

@@ -8,16 +8,19 @@ _/    _/  _/    _/    _/    _/_/    _/    _/    _/_/_/    _/_/_/
 module Main where
 
 import           Bindings
-import           Data.IORef
-import           Data.List                       (isPrefixOf)
-import qualified Data.Map                        as M hiding (Union)
-import qualified Data.Set                        as S hiding (Union)
 import           Layouts
 import           Log
 import           Projects
 import           Scratchpads
-import           System.IO
 import           Themes
+
+import           Data.IORef
+import           Data.List                       (isPrefixOf)
+import qualified Data.Map                        as M hiding (Union)
+import           Data.Monoid
+import qualified Data.Set                        as S hiding (Union)
+import           System.IO
+
 import           XMonad
 import           XMonad.Actions.DynamicProjects
 import           XMonad.Actions.NoBorders
@@ -28,7 +31,9 @@ import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.PositionStoreHooks
+import           XMonad.Hooks.ServerMode
 import           XMonad.Hooks.SetWMName
+import           XMonad.Hooks.StatusBar
 import           XMonad.Layout.BoringWindows
 import           XMonad.Layout.ButtonDecoration
 import           XMonad.Layout.DecorationAddons
@@ -44,46 +49,48 @@ import           XMonad.Util.SpawnNamedPipe
 
 main :: IO ()
 main = do
-  --checkTopicConfig myTopics myTopicConfig
-  xmonad $
-    ewmh $
-      docks $
-        dynamicProjects projects $
-          desktopConfig
-            { startupHook = myStartupHook
-            --, layoutHook         = lessBorders OnlyScreenFloat myLayout
-            , layoutHook = myLayout
-            , modMask = mod4Mask
-            , manageHook = myManageHook
-            , handleEventHook = myHandleEventHook
-            , keys = myKeys
-            , mouseBindings = myMouseBindings
-            , focusFollowsMouse = False
-            , clickJustFocuses = False
-            , XMonad.workspaces = map show [(1 :: Int) .. 12] ++ map (('W' :) . show) [(1 :: Int) .. 12]
-            , logHook = myLogHook
-            , borderWidth = 0
-            , normalBorderColor = black
-            , focusedBorderColor = purple
-            }
+  xmonad
+    . withSB myStatusBar
+    . ewmh
+    . docks
+    . dynamicProjects projects
+    $ desktopConfig
+        { layoutHook         = lessBorders (Combine Difference Screen OnlyFloat)
+                                           myLayout
+       -- (Combine Difference Screen OnlyFloat)
+        , modMask            = mod4Mask
+        , manageHook         = myManageHook
+        , handleEventHook    = myHandleEventHook
+        , keys               = myKeys
+        , mouseBindings      = myMouseBindings
+        , focusFollowsMouse  = False
+        , clickJustFocuses   = False
+        , borderWidth        = 2
+        , normalBorderColor  = black
+        , focusedBorderColor = primary
+        , workspaces         = map show [(1 :: Int) .. 12]
+                                 ++ map (('W' :) . show) [(1 :: Int) .. 12]
+        --, logHook            = myLogHook
+        --, startupHook        = myStartupHook
+        --, layoutHook         = myLayout
+        }
 
 --------------------------------------------------------------------------------
-
-myStartupHook :: X ()
-myStartupHook = do
-  spawnNamedPipe "xmobar ~/.config/nixpkgs/xmonad/xmobar/xmobar_top" "xmobar"
 
 myNSManageHook :: ManageHook
 myNSManageHook = namedScratchpadManageHook pads
 
 myManageHook :: ManageHook
 myManageHook =
-  composeAll . concat $
-    [ [myNSManageHook],
-      [title =? "x9term" --> doFloat],
-      [className =? "Msgcompose" --> doFloat],
-      [className =? "zoom" <&&> title =? "Chat" --> doFloat],
-      [positionStoreManageHook Nothing]
-    ]
+  composeAll
+    . concat
+    $ [ [myNSManageHook]
+      , [title =? "x9term" --> doFloat]
+      , [className =? "Msgcompose" --> doFloat]
+      , [className =? "zoom" <&&> title =? "Chat" --> doFloat]
+      , [positionStoreManageHook Nothing]
+      , [title =? "term" --> hasBorder True]
+      ]
 
-myHandleEventHook = positionStoreEventHook
+myHandleEventHook :: Event -> X All
+myHandleEventHook = positionStoreEventHook <> serverModeEventHook
