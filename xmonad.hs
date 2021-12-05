@@ -1,3 +1,4 @@
+{-# LANGUAGE PatternGuards #-}
 {-
                                                                   _/
    _/    _/  _/_/_/  _/_/      _/_/    _/_/_/      _/_/_/    _/_/_/
@@ -40,7 +41,10 @@ import           XMonad.Layout.DecorationAddons
 import           XMonad.Layout.NoBorders
 import           XMonad.Layout.Tabbed
 import           XMonad.ManageHook
+import           XMonad.Prelude                  hiding (singleton)
+import qualified XMonad.StackSet                 as W
 import           XMonad.Util.NamedScratchpad
+import qualified XMonad.Util.Rectangle           as R
 import           XMonad.Util.Run                 (spawnPipe)
 import           XMonad.Util.SpawnNamedPipe
 
@@ -55,9 +59,7 @@ main = do
     . docks
     . dynamicProjects projects
     $ desktopConfig
-        { layoutHook         = lessBorders (Combine Difference Screen OnlyFloat)
-                                           myLayout
-       -- (Combine Difference Screen OnlyFloat)
+        { layoutHook         = myLayout
         , modMask            = mod4Mask
         , manageHook         = myManageHook
         , handleEventHook    = myHandleEventHook
@@ -70,9 +72,6 @@ main = do
         , focusedBorderColor = primary
         , workspaces         = map show [(1 :: Int) .. 12]
                                  ++ map (('W' :) . show) [(1 :: Int) .. 12]
-        --, logHook            = myLogHook
-        --, startupHook        = myStartupHook
-        --, layoutHook         = myLayout
         }
 
 --------------------------------------------------------------------------------

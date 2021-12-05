@@ -37,6 +37,7 @@ deco = noFrillsDeco shrinkText barTheme
 
 myLayout =
   boringWindows
+    .   lessBorders OnlyTiled
     .   trackFloating
     $   tiled
     ||| mirrorTiled
@@ -72,3 +73,10 @@ myLayout =
       $ ResizableTall 1 (2 / 100) (1 / 2) []
   full     = renamed [Replace "full"] . avoidStruts $ noBorders Full
   floating = renamed [Replace "floating"] . deco . borderResize $ simpleFloat
+
+data OnlyTiled = OnlyTiled
+  deriving (Read, Show)
+
+instance SetsAmbiguous OnlyTiled where
+  hiddens amb wset lr mst wrs = ms
+    where ms = filter (`elem` W.integrate' mst) $ map fst wrs
