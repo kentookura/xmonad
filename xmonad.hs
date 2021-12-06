@@ -1,13 +1,4 @@
-{-# LANGUAGE PatternGuards #-}
-{-
-                                                                  _/
-   _/    _/  _/_/_/  _/_/      _/_/    _/_/_/      _/_/_/    _/_/_/
-    _/_/    _/    _/    _/  _/    _/  _/    _/  _/    _/  _/    _/
- _/    _/  _/    _/    _/  _/    _/  _/    _/  _/    _/  _/    _/
-_/    _/  _/    _/    _/    _/_/    _/    _/    _/_/_/    _/_/_/
-                                                                      -}
 module Main where
-
 import           Bindings
 import           Layouts
 import           Log
@@ -15,66 +6,73 @@ import           Projects
 import           Scratchpads
 import           Themes
 
-import           Data.IORef
-import           Data.List                       (isPrefixOf)
-import qualified Data.Map                        as M hiding (Union)
+import           Control.Monad
+import qualified Data.Map                        as M hiding (keys, map)
 import           Data.Monoid
-import qualified Data.Set                        as S hiding (Union)
-import           System.IO
 
 import           XMonad
 import           XMonad.Actions.DynamicProjects
-import           XMonad.Actions.NoBorders
-import           XMonad.Actions.TopicSpace
+import           XMonad.Actions.Promote
 import           XMonad.Config.Desktop
-import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
-import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.PositionStoreHooks
 import           XMonad.Hooks.ServerMode
-import           XMonad.Hooks.SetWMName
 import           XMonad.Hooks.StatusBar
-import           XMonad.Layout.BoringWindows
-import           XMonad.Layout.ButtonDecoration
-import           XMonad.Layout.DecorationAddons
-import           XMonad.Layout.NoBorders
-import           XMonad.Layout.Tabbed
 import           XMonad.ManageHook
-import           XMonad.Prelude                  hiding (singleton)
 import qualified XMonad.StackSet                 as W
 import           XMonad.Util.NamedScratchpad
-import qualified XMonad.Util.Rectangle           as R
-import           XMonad.Util.Run                 (spawnPipe)
-import           XMonad.Util.SpawnNamedPipe
+import           XMonad.Util.Replace
 
 --------------------------------------------------------------------------------
---
 
 main :: IO ()
 main = do
-  xmonad
-    . withSB myStatusBar
-    . ewmh
-    . docks
-    . dynamicProjects projects
-    $ desktopConfig
-        { layoutHook         = myLayout
-        , modMask            = mod4Mask
-        , manageHook         = myManageHook
-        , handleEventHook    = myHandleEventHook
-        , keys               = myKeys
-        , mouseBindings      = myMouseBindings
-        , focusFollowsMouse  = False
-        , clickJustFocuses   = False
-        , borderWidth        = 2
-        , normalBorderColor  = black
-        , focusedBorderColor = primary
-        , workspaces         = map show [(1 :: Int) .. 12]
-                                 ++ map (('W' :) . show) [(1 :: Int) .. 12]
-        }
+  replace
+  launch myConfig myDirs
+
+myConfig = withSB myStatusBar . ewmh . docks . dynamicProjects projects $ def
+  { normalBorderColor  = black
+  , focusedBorderColor = primary
+  , terminal           = "termonad"
+  , layoutHook         = myLayout
+  , manageHook         = myManageHook
+  , handleEventHook    = myHandleEventHook
+  , workspaces         = map show [(1 :: Int) .. 10]
+  , modMask            = mod4Mask
+  , keys               = myKeys
+  , mouseBindings      = myMouseBindings
+  , borderWidth        = 5
+  --, logHook            = raiseHook
+  , startupHook        = mempty
+  , focusFollowsMouse  = False
+  , clickJustFocuses   = False
+  }
+
+myDirs = Directories { cfgDir   = "~/xmonad"
+                     , dataDir  = "~/xmonad/data"
+                     , cacheDir = "~/xmonad/cachd"
+                     }
 
 --------------------------------------------------------------------------------
+
+myStartupHook :: X ()
+myStartupHook = do
+  mapM_
+    (spawn . ("exec " ++))
+    [ "xset r rate 300 50"
+    , "setxkbmap -option caps:super"
+    , "killall xcape 2>/dev/null ; xcape -e 'Super_L=Escape'"
+    , "hashwall -f '#282828' -b '#1e1b1c' -s 12"
+    , "unclutter &"
+    , "dunst"
+    , "onboard"
+    , "bin/eww daemon"
+    , "termonad"
+    ]
+
+myHandleEventHook :: Event -> X All
+myHandleEventHook = positionStoreEventHook <> serverModeEventHook
 
 myNSManageHook :: ManageHook
 myNSManageHook = namedScratchpadManageHook pads
@@ -88,8 +86,12 @@ myManageHook =
       , [className =? "Msgcompose" --> doFloat]
       , [className =? "zoom" <&&> title =? "Chat" --> doFloat]
       , [positionStoreManageHook Nothing]
-      , [title =? "term" --> hasBorder True]
       ]
 
-myHandleEventHook :: Event -> X All
-myHandleEventHook = positionStoreEventHook <> serverModeEventHook
+
+raiseHook :: X ()
+raiseHook = do
+  ws <- gets windowset
+  withFocused $ \w -> do
+    when (isFloat w ws) (focus w >> promote)
+  where isFloat w ss = M.member w $ W.floating ss

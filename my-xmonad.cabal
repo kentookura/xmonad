@@ -8,19 +8,17 @@ cabal-version:       >=1.10
 
 executable my-xmonad
   main-is:        xmonad.hs
-  hs-source-dirs: ., src
+  hs-source-dirs: ., src, src/Lib
   other-modules:  Bindings
-                  Deco
                   Layouts
                   Log
                   Projects
                   Scratchpads
                   Search
                   Themes
-                  Topics
-                  Tree
                   Utils
                   Workspaces
+                  ConfigurableBar
   build-depends:  aeson>=0.11.2.1
                 , base >=4.7
                 , bytestring>=0.10.8.1

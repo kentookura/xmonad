@@ -3,9 +3,7 @@ module Layouts
   ) where
 
 import qualified Data.Map                         as M
-import           Deco
-import           Themes                           (barTheme, decoTheme,
-                                                   tabTheme)
+import           Themes                           (barTheme, tabTheme)
 import           XMonad                           hiding ((|||))
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Layout.BorderResize
@@ -22,17 +20,9 @@ import           XMonad.Layout.SubLayouts
 import           XMonad.Layout.Tabbed
 import           XMonad.Layout.TrackFloating
 import           XMonad.Layout.TwoPanePersistent
-import           XMonad.Layout.WindowArranger
 import           XMonad.Layout.WindowNavigation
 import qualified XMonad.StackSet                  as W
 
-data EmptyShrinker = EmptyShrinker
-  deriving (Read, Show)
-
-instance Shrinker EmptyShrinker where
-  shrinkIt _ _ = []
-
---deco = myDeco EmptyShrinker decoTheme
 deco = noFrillsDeco shrinkText barTheme
 
 myLayout =
@@ -44,7 +34,6 @@ myLayout =
     ||| twoPane
     ||| floating
     ||| full
-  --- ||| floating
  where
   twoPane =
     renamed [Replace "panes"]
@@ -78,5 +67,4 @@ data OnlyTiled = OnlyTiled
   deriving (Read, Show)
 
 instance SetsAmbiguous OnlyTiled where
-  hiddens amb wset lr mst wrs = ms
-    where ms = filter (`elem` W.integrate' mst) $ map fst wrs
+  hiddens _ _ _ mst wrs = filter (`elem` W.integrate' mst) $ map fst wrs

@@ -2,7 +2,7 @@ Config { font             = "xft:Unifont:size=10:regular:antialias=true"
        , additionalFonts  = [ "xft:siji:pixelsize=26:antialias=true:hinting=true" ]
        , iconRoot         = "/home/kento/xmonad/xmobar" -- default: "."
        , iconOffset       = -1
-       , bgColor          = "#282828"
+       , bgColor          = "#32302f"
        , fgColor          = "#665c54"
        , position         = Static { xpos = 0, ypos = 0, width = 1920, height = 30 }
        , border           = NoBorder

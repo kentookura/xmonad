@@ -38,3 +38,6 @@ cradle:
 
     - path: "src/Workspaces.hs"
       component: "my-xmonad:exe:my-xmonad"
+
+    - path: "src/Lib/ConfigurableBar.hs"
+      component: "my-xmonad:exe:my-xmonad"

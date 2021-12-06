@@ -12,8 +12,6 @@ import           Scratchpads
 import           System.Exit
 import           System.IO
 import           Themes
-import           Topics
-import           Tree
 import           Utils
 
 import           XMonad                              hiding ((|||))
@@ -26,7 +24,6 @@ import           XMonad.Actions.NoBorders
 import           XMonad.Actions.PhysicalScreens
 import           XMonad.Actions.Submap
 import           XMonad.Actions.TopicSpace
-import qualified XMonad.Actions.TreeSelect           as TS
 import           XMonad.Actions.UpdatePointer
 import           XMonad.Actions.WindowNavigation
 import           XMonad.Actions.WorkspaceNames
@@ -47,13 +44,14 @@ import qualified XMonad.Util.PureX                   as P
 
 --}}}
 
+myTerm = "termonad"
+
 myKeys conf@XConfig { XMonad.modMask = modMask } =
   M.fromList
     $
     -- programs
        padKeys
-    ++ [ ((modMask, xK_Return)              , spawn "alacritty")
-       , ((modMask .|. shiftMask, xK_Return), spawn "alacritty")
+    ++ [ ((modMask, xK_Return), spawn myTerm)
        , ( (modMask, xK_d)
          , spawn
            "rofi -matching fuzzy -modi combi -show combi -combi-modi run, drun -theme gruvbox-dark-hard"
@@ -77,7 +75,6 @@ myKeys conf@XConfig { XMonad.modMask = modMask } =
          , cycleThroughLayouts
            ["full", "tiled", "mirrorTiled", "panes", "floating"]
          )
-       , ((modMask, xK_t)                  , treeselectAction treeTheme)
        , ((modMask, xK_b)                  , sendMessage ToggleStruts)
        , ((modMask .|. shiftMask, xK_h)    , sendMessage (IncMasterN 1))
        , ((modMask .|. shiftMask, xK_l)    , sendMessage (IncMasterN (-1)))
@@ -119,11 +116,6 @@ myKeys conf@XConfig { XMonad.modMask = modMask } =
        , ( (modMask .|. shiftMask, xK_Left)
          , withFocused (keysResizeWindow (-10, 0) (0, 0))
          )
-       ,
-           -- topics
-         ((modMask, xK_a)              , currentTopicAction myTopicConfig)
-       , ((modMask, xK_g)              , promptedGoto)
-       , ((modMask .|. shiftMask, xK_g), promptedShift)
        ,
            -- util
          ((modMask .|. shiftMask, xK_c), kill)

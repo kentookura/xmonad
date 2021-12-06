@@ -1,12 +1,12 @@
 module Workspaces where
 
-import qualified Data.Map as M
+import qualified Data.Map                  as M
 
-import XMonad
-  
-import XMonad.Actions.TopicSpace
+import           XMonad
 
-data WorkspaceConfig = WorkspaceConfig { dirs :: M.Map WorkspaceId Dir }
+import           XMonad.Actions.TopicSpace
+
+--data WorkspaceConfig = WorkspaceConfig { dirs :: M.Map WorkspaceId Dir }
 
 --spawnShell :: X ()
 --spawnShell = currentTopicDir myTopicConfig >>= spawnShellIn

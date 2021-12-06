@@ -2,7 +2,6 @@ module Themes
   ( barTheme
   , primary
   , dirTheme
-  , decoTheme
   , tabTheme
   , promptTheme
   , hotPromptTheme
@@ -14,14 +13,13 @@ module Themes
   , blue
   ) where
 
-import           Deco
 import           XMonad.Layout.NoFrillsDecoration
 import           XMonad.Prompt
 import           XMonad.Prompt.Workspace
 import           XMonad.Util.Image
 
 myFont = "xft:Dina:bold:size=10:antialias=true"
-black = "#282828"
+black = "#32302f"
 green = "#828e6f"
 red = "#cc241d"
 purple = "#8f3f71"
@@ -29,25 +27,9 @@ dark = "#665c54"
 white = "#C4C4C4"
 blue = "#3579A8"
 
-primary = green
+primary = purple
 
-decoTheme = def
-  { activeColor         = primary
-  , activeTextColor     = black
-  , inactiveTextColor   = primary
-  , inactiveColor       = black
-  , activeBorderWidth   = 0
-  , inactiveBorderWidth = 0
-  , fontName            = myFont
-  , decoHeight          = 15
-  , windowTitleIcons    = [ (lambdaSymbol, CenterLeft 5)
-                          , (closeButton , CenterRight 3)
-                          , (maxiButton  , CenterRight 18)
-                          , (miniButton  , CenterRight 33)
-                          ]
-  }
-
-barTheme = def { fontName            = font
+barTheme = def { fontName            = myFont
                , inactiveBorderColor = black
                , inactiveColor       = black
                , inactiveTextColor   = black
@@ -56,13 +38,10 @@ barTheme = def { fontName            = font
                , activeTextColor     = primary
                , urgentTextColor     = primary
                , urgentBorderColor   = primary
-               , decoHeight          = decorationHeight
+               , decoHeight          = 7
                }
- where
-  decorationHeight = 7
-  font             = myFont
 
-tabTheme = def { fontName            = font
+tabTheme = def { fontName            = myFont
                , inactiveBorderColor = black
                , inactiveColor       = black
                , inactiveTextColor   = dark
@@ -72,7 +51,6 @@ tabTheme = def { fontName            = font
                , urgentTextColor     = primary
                , urgentBorderColor   = primary
                }
-  where font = myFont
 
 promptTheme = def { font              = myFont
                   , bgColor           = black

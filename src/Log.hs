@@ -2,18 +2,14 @@ module Log
   ( myStatusBar
   ) where
 
-import           Control.Monad                 (filterM, join, liftM)
-import           Data.IORef
-import qualified Data.Set                      as S
-import           System.IO
 import           Themes
-import           XMonad                        hiding (logHook)
+
+import           XMonad
 import           XMonad.Actions.WorkspaceNames
-import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.StatusBar
+import           XMonad.Hooks.StatusBar.PP
 import qualified XMonad.StackSet               as W
 import           XMonad.Util.NamedScratchpad
-import           XMonad.Util.Run               (spawnPipe)
 import           XMonad.Util.SpawnNamedPipe
 import           XMonad.Util.WorkspaceCompare
 
