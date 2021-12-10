@@ -44,14 +44,12 @@ import qualified XMonad.Util.PureX                   as P
 
 --}}}
 
-myTerm = "termonad"
-
 myKeys conf@XConfig { XMonad.modMask = modMask } =
   M.fromList
     $
     -- programs
        padKeys
-    ++ [ ((modMask, xK_Return), spawn myTerm)
+    ++ [ ((modMask, xK_Return), spawn "wezterm")
        , ( (modMask, xK_d)
          , spawn
            "rofi -matching fuzzy -modi combi -show combi -combi-modi run, drun -theme gruvbox-dark-hard"
@@ -61,16 +59,15 @@ myKeys conf@XConfig { XMonad.modMask = modMask } =
        , ((modMask, xK_y)                 , spawn "xournalpp")
        , ((controlMask .|. mod1Mask, xK_k), spawn "kbd")
        , ((controlMask .|. mod1Mask, xK_l), spawn "lock")
-       ,
            --((modMask, xK_p), withFocused $ makeDynamicSP "pdf"),
            --, ((modMask, xK_plus), switchProjectPrompt promptTheme)
            --, ((modMask, xK_slash), shiftToProjectPrompt promptTheme)
-         ((modMask, xK_c)                 , changeProjectDirPrompt dirTheme)
-       , -- I am using 2 modules here
-         ((modMask, xK_v)                 , renameWorkspace promptTheme)
-       ,
+        -- I am using 2 modules here
+       , ((modMask, xK_c)                 , changeProjectDirPrompt dirTheme)
+       , ((modMask, xK_v)                 , renameWorkspace promptTheme)
+
            -- layout
-         ((modMask, xK_f), cycleThroughLayouts ["full", "tiled"])
+       , ((modMask, xK_f), cycleThroughLayouts ["full", "tiled"])
        , ( (modMask, xK_Tab)
          , cycleThroughLayouts
            ["full", "tiled", "mirrorTiled", "panes", "floating"]
@@ -123,8 +120,6 @@ myKeys conf@XConfig { XMonad.modMask = modMask } =
        , ( (modMask .|. shiftMask, xK_q)
          , confirmPrompt hotPromptTheme "quit XMonad" $ io exitSuccess
          )
-           --, ((0, xF86_XK_AudioLowerVolume),      )
-           --, ((0, xF86_XK_AudioRaiseVolume),      )
        ]
     ++ [ ((m, k), P.defile f >> up)
        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
@@ -135,19 +130,6 @@ myKeys conf@XConfig { XMonad.modMask = modMask } =
          ]
        ]
 
-{-
-[((m .|. modMask, key), windows $ f workspace)
-  | (workspace, key) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-  , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
-  -}
--- screens
--- [((m .|. modMask, key), f sc)
---   | (key, sc) <- zip [xK_m, xK_comma, xK_period] [0..]
---   , (f, m)    <- [(viewScreen def, 0), (sendToScreen def, shiftMask)]]
--- search
---[((modMask, xK_s), submap $ searchList $ S.promptSearch promptTheme)]
--- ++
--- [((modMask, k), S.selectSearch f) | (k,f) <- searchList ]
 
 myMouseBindings XConfig { XMonad.modMask = modMask } = M.fromList
   [ ((modMask, button1), \w -> XMonad.Operations.focus w >> mouseMoveWindow w)
