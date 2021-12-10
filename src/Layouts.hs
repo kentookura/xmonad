@@ -60,7 +60,7 @@ myLayout =
       . subLayout [] Simplest
       $ Mirror
       $ ResizableTall 1 (2 / 100) (1 / 2) []
-  full     = renamed [Replace "full"] . avoidStruts $ noBorders Full
+  full     = avoidStruts . renamed [Replace "full"] $ noBorders Full
   floating = renamed [Replace "floating"] . deco . borderResize $ simpleFloat
 
 data OnlyTiled = OnlyTiled

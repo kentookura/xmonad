@@ -8,6 +8,7 @@ module Themes
   , myFont
   , black
   , purple
+  , red
   , dark
   , white
   , blue
@@ -18,7 +19,7 @@ import           XMonad.Prompt
 import           XMonad.Prompt.Workspace
 import           XMonad.Util.Image
 
-myFont = "xft:Dina:bold:size=10:antialias=true"
+myFont = "xft:Scientifica:bold:size=12:antialias=true"
 black = "#32302f"
 green = "#828e6f"
 red = "#cc241d"

@@ -17,7 +17,8 @@ pads =
   , NS "htop" "alacritty -t htop -e /bin/htop" (title =? "htop") htopHook
   , NS "term" "alacritty -t term" (title =? "term") termHook
   , NS "lf" "alacritty -t lf -e lf" (title =? "lf") mailHook
-  , NS "discord" "discord" (className =? "discord") discordHook
+  , NS "sound" "pavucontrol" (className =? "Pavucontrol") mailHook
+  , NS "discord" "discord" (title =? "Volume Control") discordHook
   , NS "mail" "alacritty -t mail -e neomutt" (title =? "mail") mailHook
   ]
  where
@@ -32,6 +33,7 @@ padKeys =
   [ ((mod4Mask, xK_space)         , namedScratchpadAction pads "term")
   , ((mod4Mask, xK_r)             , namedScratchpadAction pads "lf")
   , ((mod4Mask, xK_c)             , namedScratchpadAction pads "cal")
+  , ((mod4Mask .|. mod1Mask, xK_s), namedScratchpadAction pads "sound")
   , ((mod4Mask .|. mod1Mask, xK_q), namedScratchpadAction pads "htop")
   , ((mod4Mask .|. mod1Mask, xK_d), namedScratchpadAction pads "discord")
   ]
