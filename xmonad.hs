@@ -22,12 +22,14 @@ import           XMonad.Actions.DynamicProjects
 import           XMonad.Actions.Promote
 import           XMonad.Actions.WorkspaceNames
 import           XMonad.Config.Desktop
+import           XMonad.Config.Kde
 import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.PositionStoreHooks
 import           XMonad.Hooks.ServerMode
 import           XMonad.Hooks.StatusBar
 import           XMonad.Hooks.StatusBar.PP
+import           XMonad.Hooks.UrgencyHook
 import           XMonad.ManageHook
 import qualified XMonad.StackSet                 as W
 import           XMonad.Util.NamedScratchpad
@@ -48,11 +50,11 @@ main = do
     { logHook = workspaceNamesPP (myPolyBarWithDBus dbus) >>= dynamicLogWithPP
     }
 
-myConfig = ewmh . workspaceNamesEwmh . docks $ def
+myConfig = setEwmhActivateHook doAskUrgent . ewmh . workspaceNamesEwmh . docks $ def
   { normalBorderColor  = black
   , focusedBorderColor = primary
   , layoutHook         = myLayout
-  , manageHook         = myManageHook
+  --, manageHook         = myManageHook
   , handleEventHook    = myHandleEventHook
   , workspaces         = map show [(1 :: Int) .. 10]
   , modMask            = mod4Mask
@@ -61,7 +63,6 @@ myConfig = ewmh . workspaceNamesEwmh . docks $ def
   , borderWidth        = 5
   , focusFollowsMouse  = False
   , clickJustFocuses   = False
-  , startupHook        = spawn "polybar -c ~/nix/polybar/config laptop"
   }
 
 myHandleEventHook :: Event -> X All
@@ -70,25 +71,21 @@ myHandleEventHook = positionStoreEventHook <> serverModeEventHook
 myNSManageHook :: ManageHook
 myNSManageHook = namedScratchpadManageHook pads
 
-myManageHook :: ManageHook
-myManageHook =
-  composeAll
-    . concat
-    $ [ [myNSManageHook]
-      , [title =? "x9term" --> doFloat]
-      , [className =? "Msgcompose" --> doFloat]
-      , [className =? "zoom" <&&> title =? "Chat" --> doFloat]
-      , [positionStoreManageHook Nothing]
-      ]
+--myManageHook :: ManageHook
+--myManageHook =
+--  composeAll
+--    . concat
+--    $ [ [myNSManageHook]
+--      , [title =? "x9term" --> doFloat]
+--      , [className =? "Msgcompose" --> doFloat]
+--      , [className =? "zoom" <&&> title =? "Chat" --> doFloat]
+--      , [positionStoreManageHook Nothing]
+--      ]
 
 
 -- Unused
 --------------------------------------------------------------------------------
 
-myDirs = Directories { cfgDir   = "~/xmonad"
-                     , dataDir  = "~/xmonad/data"
-                     , cacheDir = "~/xmonad/cachd"
-                     }
 
 myStartupHook :: X ()
 myStartupHook = do
@@ -97,12 +94,10 @@ myStartupHook = do
     [ "xset r rate 300 50"
     , "setxkbmap -option caps:super"
     , "killall xcape 2>/dev/null ; xcape -e 'Super_L=Escape'"
-    , "hashwall -f '#282828' -b '#1e1b1c' -s 12"
     , "unclutter &"
     , "dunst"
     , "onboard"
     , "bin/eww daemon"
-    , "termonad"
     ]
 
 raiseHook :: X ()

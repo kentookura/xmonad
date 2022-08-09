@@ -1,8 +1,8 @@
 {
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    xmonad-contrib = { url = "git+https://github.com/xmonad/xmonad-contrib"; };
-    xmonad = { url = "git+https://github.com/xmonad/xmonad"; };
+    xmonad-contrib = { url = "github:xmonad/xmonad-contrib"; };
+    xmonad = { url = "github:xmonad/xmonad"; };
   };
   outputs = { self, flake-utils, nixpkgs, xmonad, xmonad-contrib }:
     let
@@ -26,8 +26,9 @@
             implicit-hie
           ];
         };
-        defaultPackage = pkgs.haskellPackages.my-xmonad;
-      }) // {
-        inherit overlay overlays;
-      };
+        defaultPackage = pkgs.haskellPackages.xmonad;
+      });
+      #// {
+      #  inherit overlay overlay;
+      #};
 }
