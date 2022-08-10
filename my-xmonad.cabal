@@ -12,7 +12,7 @@ executable xmonad
   haddock-hoogle: True
   haddock-html: True
   main-is:        xmonad.hs
-  hs-source-dirs: ., src, src/Lib
+  hs-source-dirs: src, src/Lib
   other-modules:  Bindings
                   Layouts
                   Log
