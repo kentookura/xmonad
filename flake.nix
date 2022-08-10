@@ -8,8 +8,14 @@
     let
       overlay = import ./overlay.nix;
       overlays = [ overlay xmonad.overlay xmonad-contrib.overlay ];
-      packageName = "xmonadKento";
-      versionNum = "0.1.0";
+      nixosModule = {config, pkgs, lib, ...}:
+        with lib;
+        with attrsets;
+        let cfg = config.graphical.xmonad;
+        in {
+          options = {
+          };
+        };
     in flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -17,42 +23,6 @@
           config.allowBroken = true;
         };
       in rec {
-        packages.${packageName} = pkgs.stdenv.mkDerivation rec {
-          pname = "${packageName}";
-          version = "${versionNum}";
-
-          src = ./src;
-
-          nativeBuildInputs = [
-            pkgs.cabal-install
-            pkgs.ghc
-          ];
-
-          unpackPhase =
-            ''
-              cp -r $src/* .
-            '';
-
-          configurePhase =
-            ''
-              mkdir -p cabal
-              CABAL_DIR=$PWD/cabal cabal user-config init
-              sed --in-place '/^repository /d; /^ *url:/d; /^ *--/d' cabal/config
-            '';
-
-          buildPhase =
-            ''
-              CABAL_DIR=$PWD/cabal cabal build
-            '';
-
-          installPhase =
-            ''
-              CABAL_DIR=$PWD/cabal cabal install
-              mkdir -p $out/bin
-              cp cabal/bin/${packageName} $out/bin/
-            '';
-        };
-
         devShell = pkgs.haskellPackages.shellFor {
           packages = p: [ p.xmonad p.xmonad-contrib ];
           buildInputs = with pkgs.haskellPackages; [
@@ -65,12 +35,6 @@
           ];
         };
         defaultPackage = pkgs.haskellPackages.xmonad;
-        nixosModules.${packageName} =
-          { pkgs, ...}:
-          {
-            nixpkgs.overlays = [ self.overlay ];
-            environment.systemPackages = [pkgs.${packageName} ];
-          };
       });
       #// {
       #  inherit overlay overlay;
