@@ -60,7 +60,7 @@ myConfig = setEwmhActivateHook doAskUrgent . ewmh . workspaceNamesEwmh . docks $
   , modMask            = mod4Mask
   , keys               = myKeys
   , mouseBindings      = myMouseBindings
-  , borderWidth        = 5
+  , borderWidth        = 10
   , focusFollowsMouse  = False
   , clickJustFocuses   = False
   }
@@ -70,35 +70,6 @@ myHandleEventHook = positionStoreEventHook <> serverModeEventHook
 
 myNSManageHook :: ManageHook
 myNSManageHook = namedScratchpadManageHook pads
-
---myManageHook :: ManageHook
---myManageHook =
---  composeAll
---    . concat
---    $ [ [myNSManageHook]
---      , [title =? "x9term" --> doFloat]
---      , [className =? "Msgcompose" --> doFloat]
---      , [className =? "zoom" <&&> title =? "Chat" --> doFloat]
---      , [positionStoreManageHook Nothing]
---      ]
-
-
--- Unused
---------------------------------------------------------------------------------
-
-
-myStartupHook :: X ()
-myStartupHook = do
-  mapM_
-    (spawn . (++ " &"))
-    [ "xset r rate 300 50"
-    , "setxkbmap -option caps:super"
-    , "killall xcape 2>/dev/null ; xcape -e 'Super_L=Escape'"
-    , "unclutter &"
-    , "dunst"
-    , "onboard"
-    , "bin/eww daemon"
-    ]
 
 raiseHook :: X ()
 raiseHook = do

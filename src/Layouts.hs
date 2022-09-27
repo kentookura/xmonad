@@ -15,6 +15,7 @@ import           XMonad.Layout.PositionStoreFloat
 import           XMonad.Layout.Renamed
 import           XMonad.Layout.ResizableTile
 import           XMonad.Layout.SimpleFloat
+import           XMonad.Layout.StackTile
 import           XMonad.Layout.Simplest
 import           XMonad.Layout.SubLayouts
 import           XMonad.Layout.Tabbed
@@ -31,6 +32,7 @@ myLayout =
     .   trackFloating
     $   tiled
     ||| mirrorTiled
+    ||| stacked
     ||| twoPane
     ||| floating
     ||| full
@@ -51,6 +53,14 @@ myLayout =
       . windowNavigation
       . subLayout [] Simplest
       $ ResizableTall 1 (1 / 50) (1 / 2) []
+  stacked = 
+    renamed [Replace "stackTile"]
+      . avoidStruts
+      . deco
+      . addTabs shrinkText tabTheme
+      . windowNavigation
+      . subLayout [] Simplest
+      $ StackTile 1 (3/100) (1/2)
   mirrorTiled =
     renamed [Replace "mirrorTiled"]
       . avoidStruts

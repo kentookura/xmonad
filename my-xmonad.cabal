@@ -7,7 +7,7 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 
-executable xmonad
+executable xmonadKento
   documentation: True
   haddock-hoogle: True
   haddock-html: True
@@ -24,6 +24,7 @@ executable xmonad
                   Workspaces
                   ConfigurableBar
   build-depends:  aeson>=0.11.2.1
+                , colour
                 , base >=4.7
                 , unicode
                 , bytestring>=0.10.8.1

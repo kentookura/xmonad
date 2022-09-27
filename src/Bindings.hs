@@ -49,29 +49,19 @@ myKeys conf@XConfig { XMonad.modMask = modMask } =
     $
     -- programs
        padKeys
-    ++ [ ((modMask, xK_Return), spawn "wezterm")
+    ++ [ ((modMask, xK_Return), spawn "$TERM")
        , ( (modMask, xK_d)
          , spawn
            "rofi -matching fuzzy -modi combi -show combi -combi-modi run, drun -theme gruvbox-dark-hard"
          )
-       , ((modMask, xK_x)                 , withFocused toggleBorder)
-       , ((modMask, xK_w)                 , spawn "qutebrowser")
-       , ((modMask, xK_y)                 , spawn "xournalpp")
-       , ((controlMask .|. mod1Mask, xK_k), spawn "kbd")
-       , ((controlMask .|. mod1Mask, xK_l), spawn "lock")
-           --((modMask, xK_p), withFocused $ makeDynamicSP "pdf"),
-           --, ((modMask, xK_plus), switchProjectPrompt promptTheme)
-           --, ((modMask, xK_slash), shiftToProjectPrompt promptTheme)
+       , ((modMask, xK_w)                 , spawn "$BROWSER")
         -- I am using 2 modules here
        , ((modMask, xK_c)                 , changeProjectDirPrompt dirTheme)
        , ((modMask, xK_v)                 , renameWorkspace promptTheme)
 
            -- layout
-       , ((modMask, xK_f), cycleThroughLayouts ["full", "tiled"])
-       , ( (modMask, xK_Tab)
-         , cycleThroughLayouts
-           ["full", "tiled", "mirrorTiled", "panes", "floating"]
-         )
+       , ((modMask, xK_f)    , cycleThroughLayouts ["full", "tiled"])
+       , ((modMask, xK_Tab)  , cycleThroughLayouts ["full", "stacked"])
        , ((modMask, xK_b)                  , sendMessage ToggleStruts)
        , ((modMask .|. shiftMask, xK_h)    , sendMessage (IncMasterN 1))
        , ((modMask .|. shiftMask, xK_l)    , sendMessage (IncMasterN (-1)))
