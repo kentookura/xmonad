@@ -3,7 +3,7 @@ _: pkgs: rec {
     overrides =
       pkgs.lib.composeExtensions (old.overrides or (_: _: {}))
       (self: super: rec {
-        xmonadKento = self.callCabal2nix "xmonad" ./. {};
+        xmonadKento = self.callCabal2nix "xmonadKento" ./. {};
         #my-xmonad = self.callCabal2nix "my-xmonad"
         #  (pkgs.lib.sourceByRegex ./. [ "lib/" "my-xmonad.cabal" ]) { };
       });

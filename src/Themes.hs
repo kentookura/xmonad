@@ -28,7 +28,7 @@ purple = "#8f3f71"
 dark = "#665c54"
 white = "#C4C4C4"
 blue = "#3579A8"
-bg0 = "#2b3339"
+bg0 = "#2f383e"
 bg1 = "#323c41"
 bg2 = "#3a454a"
 bg3 = "#445055"
@@ -46,8 +46,8 @@ shade_3 = "#1C241E"
 shade_4 = "#14271A"
 
 
-primary = accent
-bg = bg1
+primary = shade_1
+bg = bg0
 
 barTheme = def { fontName            = myFont
                , inactiveBorderColor = black

@@ -1,43 +1,43 @@
 cradle:
   cabal:
     - path: "xmonad.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Bindings.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Deco.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Layouts.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Log.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Projects.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Scratchpads.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Search.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Themes.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Topics.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Tree.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Utils.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Workspaces.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"
 
     - path: "src/Lib/ConfigurableBar.hs"
-      component: "my-xmonad:exe:my-xmonad"
+      component: "xmonadKento:exe:xmonadKento"

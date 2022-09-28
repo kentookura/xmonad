@@ -2,12 +2,15 @@ module Layouts
   ( myLayout
   ) where
 
-import qualified Data.Map                         as M
-import           Themes                           (barTheme, tabTheme)
-import           XMonad                           hiding ((|||))
+import           Themes                                 (barTheme, tabTheme)
+
+import qualified Data.Map                               as M
+import           XMonad                                 hiding ((|||))
 import           XMonad.Hooks.ManageDocks
+import qualified XMonad.StackSet                        as W
+
 import           XMonad.Layout.BorderResize
-import           XMonad.Layout.BoringWindows      hiding (Replace)
+import           XMonad.Layout.BoringWindows            hiding (Replace)
 import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout.NoBorders
 import           XMonad.Layout.NoFrillsDecoration
@@ -15,14 +18,14 @@ import           XMonad.Layout.PositionStoreFloat
 import           XMonad.Layout.Renamed
 import           XMonad.Layout.ResizableTile
 import           XMonad.Layout.SimpleFloat
-import           XMonad.Layout.StackTile
 import           XMonad.Layout.Simplest
+import           XMonad.Layout.StackTile
 import           XMonad.Layout.SubLayouts
 import           XMonad.Layout.Tabbed
 import           XMonad.Layout.TrackFloating
 import           XMonad.Layout.TwoPanePersistent
 import           XMonad.Layout.WindowNavigation
-import qualified XMonad.StackSet                  as W
+import           XMonad.Layout.WindowSwitcherDecoration
 
 deco = noFrillsDeco shrinkText barTheme
 
@@ -45,6 +48,9 @@ myLayout =
       . windowNavigation
       . subLayout [] Simplest
       $ TwoPanePersistent Nothing (1 / 50) (1 / 2)
+  --read =
+  --  renamed [Replace "reading"]
+  --    . avoidStruts
   tiled =
     renamed [Replace "tiled"]
       . avoidStruts
@@ -53,7 +59,7 @@ myLayout =
       . windowNavigation
       . subLayout [] Simplest
       $ ResizableTall 1 (1 / 50) (1 / 2) []
-  stacked = 
+  stacked =
     renamed [Replace "stackTile"]
       . avoidStruts
       . deco

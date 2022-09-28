@@ -12,7 +12,6 @@
     xmonad,
     xmonad-contrib,
   }: let
-    #system = "x86_64-linux";
     overlay = import ./overlay.nix;
     overlays = [overlay xmonad.overlay xmonad-contrib.overlay];
   in
