@@ -52,17 +52,18 @@ myKeys conf@XConfig { XMonad.modMask = modMask } =
     ++ [ ((modMask, xK_Return), spawn "$TERM")
        , ( (modMask, xK_d)
          , spawn
-           "rofi -matching fuzzy -modi combi -show combi -combi-modi run, drun -theme gruvbox-dark-hard"
-         )
+           "$LAUNCHER")
        , ((modMask, xK_w)                 , spawn "$BROWSER")
+       , ((modMask, xK_f)    , cycleThroughLayouts ["full", "tiled"])
+       , ((modMask, xK_p)                 , spawn "$PASS")
+       , ((modMask, xK_b)                  , markBoring)
+
         -- I am using 2 modules here
-       , ((modMask, xK_c)                 , changeProjectDirPrompt dirTheme)
-       , ((modMask, xK_v)                 , renameWorkspace promptTheme)
+       --, ((modMask, xK_c)                 , changeProjectDirPrompt dirTheme)
+       --, ((modMask, xK_v)                 , renameWorkspace promptTheme)
 
            -- layout
-       , ((modMask, xK_f)    , cycleThroughLayouts ["full", "tiled"])
-       , ((modMask, xK_Tab)  , cycleThroughLayouts ["full", "stacked"])
-       , ((modMask, xK_b)                  , sendMessage ToggleStruts)
+       -- , ((modMask, xK_Tab)  , cycleThroughLayouts ["full", "stacked"])
        , ((modMask .|. shiftMask, xK_h)    , sendMessage (IncMasterN 1))
        , ((modMask .|. shiftMask, xK_l)    , sendMessage (IncMasterN (-1)))
        , ((modMask .|. shiftMask, xK_space), windows W.swapMaster)
