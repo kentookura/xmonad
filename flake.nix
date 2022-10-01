@@ -1,45 +1,55 @@
 {
-  description = "Kento's XMonad config";
+  description = "srid/haskell-template: Nix template for Haskell projects";
   inputs = {
-    flake-utils.url = "github:numtide/flake-utils";
-    xmonad-contrib = { url = "github:xmonad/xmonad-contrib"; };
-    xmonad = { url = "github:xmonad/xmonad"; };
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs.follows = "nixpkgs";
+    haskell-flake.url = "github:srid/haskell-flake";
+    treefmt-flake.url = "github:srid/treefmt-flake";
   };
-  outputs =
-    { self
-    , flake-utils
-    , nixpkgs
-    , xmonad
-    , xmonad-contrib
-    ,
-    }:
-    let
-      overlay = import ./overlay.nix;
-      overlays = [ overlay xmonad.overlay xmonad-contrib.overlay ];
-    in
-    flake-utils.lib.eachDefaultSystem
-      (system:
-      let
-        pkgs = import nixpkgs {
-          inherit system overlays;
-          config.allowBorken = true;
+
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    flake-parts,
+    ...
+  }:
+    flake-parts.lib.mkFlake {inherit self;} {
+      systems = nixpkgs.lib.systems.flakeExposed;
+      imports = [
+        inputs.haskell-flake.flakeModule
+        inputs.treefmt-flake.flakeModule
+      ];
+      perSystem = {
+        self',
+        config,
+        pkgs,
+        ...
+      }: {
+        haskellProjects.default = {
+          root = ./.;
+          buildTools = hp:
+            {
+              inherit
+                (pkgs)
+                treefmt
+                ;
+            }
+            // config.treefmt.formatters;
+          hlsCheck.enable = true;
+          hlintCheck.enable = true;
         };
-      in
-      rec {
-        devShell = pkgs.haskellPackages.shellFor {
-          packages = p: [ p.xmonadKento p.xmonad p.xmonad-contrib ];
-          buildInputs = with pkgs.haskellPackages; [
-            cabal-install
-            haskell-language-server
-            hlint
-            ghcid
-            ormolu
-            implicit-hie
-          ];
+        treefmt.formatters = {
+          inherit
+            (pkgs)
+            nixpkgs-fmt
+            ;
+          inherit
+            (pkgs.haskellPackages)
+            cabal-fmt
+            fourmolu
+            ;
         };
-        defaultPackage = pkgs.haskellPackages.xmonadKento;
-      })
-    // {
-      inherit overlay overlays;
+      };
     };
 }
