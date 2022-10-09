@@ -1,11 +1,7 @@
-{-# LANGUAGE PackageImports #-}
-
 module Bindings
   ( myKeys
   , myMouseBindings
   ) where
-
---{{{
 
 import qualified Data.Map                            as M
 import           Scratchpads
@@ -42,8 +38,7 @@ import           XMonad.Prompt.Workspace
 import qualified XMonad.StackSet                     as W
 import qualified XMonad.Util.PureX                   as P
 
---}}}
-
+myKeys :: XConfig l -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } =
   M.fromList
     $
