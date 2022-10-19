@@ -1,7 +1,8 @@
 module Bindings
-  ( myKeys
-  , myMouseBindings
-  ) where
+  ( myKeys,
+    myMouseBindings,
+  )
+where
 
 import qualified Data.Map                            as M
 import           Scratchpads
@@ -9,7 +10,6 @@ import           System.Exit
 import           System.IO
 import           Themes
 import           Utils
-
 import           XMonad                              hiding ((|||))
 import           XMonad.Actions.CycleSelectedLayouts
 import           XMonad.Actions.DwmPromote
@@ -39,94 +39,90 @@ import qualified XMonad.StackSet                     as W
 import qualified XMonad.Util.PureX                   as P
 
 myKeys :: XConfig l -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@XConfig { XMonad.modMask = modMask } =
-  M.fromList
-    $
+myKeys conf@XConfig {XMonad.modMask = modMask} =
+  M.fromList $
     -- programs
-       padKeys
-    ++ [ ((modMask, xK_Return), spawn "$TERM")
-       , ( (modMask, xK_d)
-         , spawn
-           "$LAUNCHER")
-       , ((modMask, xK_w)                 , spawn "$BROWSER")
-       , ((modMask, xK_f)    , cycleThroughLayouts ["full", "tiled"])
-       , ((modMask, xK_p)                 , spawn "$PASS")
-       , ((modMask, xK_b)                  , markBoring)
-
-        -- I am using 2 modules here
-       --, ((modMask, xK_c)                 , changeProjectDirPrompt dirTheme)
-       --, ((modMask, xK_v)                 , renameWorkspace promptTheme)
+    padKeys
+      ++ [ ((modMask, xK_Return), spawn "$TERM"),
+           ( (modMask, xK_d),
+             spawn
+               "$LAUNCHER"
+           ),
+           ((modMask, xK_w), spawn "$BROWSER"),
+           ((modMask, xK_f), cycleThroughLayouts ["full", "tiled"]),
+           ((modMask, xK_p), spawn "$PASS"),
+           ((modMask, xK_b), markBoring),
+           ((modMask .|. shiftMask, xK_b), clearBoring),
+           -- I am using 2 modules here
+           --, ((modMask, xK_c)                 , changeProjectDirPrompt dirTheme)
+           --, ((modMask, xK_v)                 , renameWorkspace promptTheme)
 
            -- layout
-       -- , ((modMask, xK_Tab)  , cycleThroughLayouts ["full", "stacked"])
-       , ((modMask .|. shiftMask, xK_h)    , sendMessage (IncMasterN 1))
-       , ((modMask .|. shiftMask, xK_l)    , sendMessage (IncMasterN (-1)))
-       , ((modMask .|. shiftMask, xK_space), windows W.swapMaster)
-       , ((modMask, xK_j)                  , focusDown)
-       , ((modMask, xK_k)                  , focusUp)
-       , ((modMask .|. shiftMask, xK_j)    , windows W.swapDown)
-       , ((modMask .|. shiftMask, xK_k)    , windows W.swapUp)
-       , ((modMask .|. mod1Mask, xK_h)     , (sendMessage . pullGroup) L)
-       , ((modMask .|. mod1Mask, xK_l)     , (sendMessage . pullGroup) R)
-       , ((modMask .|. mod1Mask, xK_k)     , (sendMessage . pullGroup) U)
-       , ((modMask .|. mod1Mask, xK_j)     , (sendMessage . pullGroup) D)
-       , ((modMask .|. mod1Mask, xK_m), withFocused (sendMessage . MergeAll))
-       , ((modMask .|. mod1Mask, xK_u), withFocused (sendMessage . UnMerge))
-       , ((modMask, xK_n)                  , onGroup W.focusUp')
-       , ((modMask, xK_m)                  , onGroup W.focusDown')
-       ,
+           -- , ((modMask, xK_Tab)  , cycleThroughLayouts ["full", "stacked"])
+           ((modMask .|. shiftMask, xK_h), sendMessage (IncMasterN 1)),
+           ((modMask .|. shiftMask, xK_l), sendMessage (IncMasterN (-1))),
+           ((modMask .|. shiftMask, xK_space), windows W.swapMaster),
+           ((modMask, xK_j), focusDown),
+           ((modMask, xK_k), focusUp),
+           ((modMask .|. shiftMask, xK_j), windows W.swapDown),
+           ((modMask .|. shiftMask, xK_k), windows W.swapUp),
+           ((modMask .|. mod1Mask, xK_h), (sendMessage . pullGroup) L),
+           ((modMask .|. mod1Mask, xK_l), (sendMessage . pullGroup) R),
+           ((modMask .|. mod1Mask, xK_k), (sendMessage . pullGroup) U),
+           ((modMask .|. mod1Mask, xK_j), (sendMessage . pullGroup) D),
+           ((modMask .|. mod1Mask, xK_m), withFocused (sendMessage . MergeAll)),
+           ((modMask .|. mod1Mask, xK_u), withFocused (sendMessage . UnMerge)),
+           ((modMask, xK_n), onGroup W.focusUp'),
+           ((modMask, xK_m), onGroup W.focusDown'),
            -- resizing
-         ((modMask, xK_h)                  , sendMessage Shrink)
-       , ((modMask, xK_l)                  , sendMessage Expand)
-       , ((modMask, xK_u)                  , sendMessage MirrorShrink)
-       , ((modMask, xK_i)                  , sendMessage MirrorExpand)
-       ,
+           ((modMask, xK_h), sendMessage Shrink),
+           ((modMask, xK_l), sendMessage Expand),
+           ((modMask, xK_u), sendMessage MirrorShrink),
+           ((modMask, xK_i), sendMessage MirrorExpand),
            -- floating
-         ((modMask .|. shiftMask, xK_t)    , withFocused $ windows . W.sink)
-       , ((modMask, xK_Up), withFocused (keysMoveWindow (0, -10)))
-       , ((modMask, xK_Down), withFocused (keysMoveWindow (0, 10)))
-       , ((modMask, xK_Right), withFocused (keysMoveWindow (10, 0)))
-       , ((modMask, xK_Left), withFocused (keysMoveWindow (-10, 0)))
-       , ( (modMask .|. shiftMask, xK_Up)
-         , withFocused (keysResizeWindow (0, 10) (0, 1))
-         )
-       , ( (modMask .|. shiftMask, xK_Down)
-         , withFocused (keysResizeWindow (0, -10) (0, 1))
-         )
-       , ( (modMask .|. shiftMask, xK_Right)
-         , withFocused (keysResizeWindow (10, 0) (0, 0))
-         )
-       , ( (modMask .|. shiftMask, xK_Left)
-         , withFocused (keysResizeWindow (-10, 0) (0, 0))
-         )
-       ,
+           ((modMask .|. shiftMask, xK_t), withFocused $ windows . W.sink),
+           ((modMask, xK_Up), withFocused (keysMoveWindow (0, -10))),
+           ((modMask, xK_Down), withFocused (keysMoveWindow (0, 10))),
+           ((modMask, xK_Right), withFocused (keysMoveWindow (10, 0))),
+           ((modMask, xK_Left), withFocused (keysMoveWindow (-10, 0))),
+           ( (modMask .|. shiftMask, xK_Up),
+             withFocused (keysResizeWindow (0, 10) (0, 1))
+           ),
+           ( (modMask .|. shiftMask, xK_Down),
+             withFocused (keysResizeWindow (0, -10) (0, 1))
+           ),
+           ( (modMask .|. shiftMask, xK_Right),
+             withFocused (keysResizeWindow (10, 0) (0, 0))
+           ),
+           ( (modMask .|. shiftMask, xK_Left),
+             withFocused (keysResizeWindow (-10, 0) (0, 0))
+           ),
            -- util
-         ((modMask .|. shiftMask, xK_c), kill)
-       , ((modMask, xK_q)              , restart "xmonad" True)
-       , ( (modMask .|. shiftMask, xK_q)
-         , confirmPrompt hotPromptTheme "quit XMonad" $ io exitSuccess
-         )
-       ]
-    ++ [ ((m, k), P.defile f >> up)
-       | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-       , (f, m) <-
-         [ (P.view i             , modMask)
-         , (P.shift i            , modMask .|. shiftMask)
-         , (P.shift i <> P.view i, modMask .|. mod1Mask)
+           ((modMask .|. shiftMask, xK_c), kill),
+           ((modMask, xK_q), restart "xmonad" True),
+           ( (modMask .|. shiftMask, xK_q),
+             confirmPrompt hotPromptTheme "quit XMonad" $ io exitSuccess
+           )
          ]
-       ]
+      ++ [ ((m, k), P.defile f >> up)
+           | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9],
+             (f, m) <-
+               [ (P.view i, modMask),
+                 (P.shift i, modMask .|. shiftMask),
+                 (P.shift i <> P.view i, modMask .|. mod1Mask)
+               ]
+         ]
 
-
-myMouseBindings XConfig { XMonad.modMask = modMask } = M.fromList
-  [ ((modMask, button1), \w -> XMonad.Operations.focus w >> mouseMoveWindow w)
-  , ( (modMask .|. shiftMask, button1)
-    , \w -> XMonad.Operations.focus w >> Flex.mouseResizeWindow w
-    )
-  ,
+myMouseBindings XConfig {XMonad.modMask = modMask} =
+  M.fromList
+    [ ((modMask, button1), \w -> XMonad.Operations.focus w >> mouseMoveWindow w),
+      ( (modMask .|. shiftMask, button1),
+        \w -> XMonad.Operations.focus w >> Flex.mouseResizeWindow w
+      ),
       --, ((modMask,               button2), \w -> XMonad.Operations.focus w >> windows W.sink)
-    ((modMask, button4), \w -> XMonad.Operations.focus w >> windows W.focusDown)
-  , ((modMask, button5), \w -> XMonad.Operations.focus w >> windows W.focusUp)
-  ]
+      ((modMask, button4), \w -> XMonad.Operations.focus w >> windows W.focusDown),
+      ((modMask, button5), \w -> XMonad.Operations.focus w >> windows W.focusUp)
+    ]
 
 up :: X ()
 up = updatePointer (0.5, 0.5) (0, 0)

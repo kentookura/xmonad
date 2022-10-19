@@ -15,7 +15,7 @@ pads =
   , NS "lf" "alacritty -t lf -e lf" (title =? "lf") lfHook
   ]
  where
-  lfHook    = customFloating $ rr (1 / 6) (1 / 6) (2 / 3) (2 / 3)
+  lfHook      = customFloating $ rr (1 / 6) (1 / 6) (2 / 3) (2 / 3)
   termHook    = customFloating $ rr (1 / 3) (1 / 37) (2 / 3) (2 / 3)
   rr          = W.RationalRect
 
